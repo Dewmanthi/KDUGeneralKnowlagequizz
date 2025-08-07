@@ -1,592 +1,461 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>General Knowledge MCQ Quiz - Levels</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f0f4f8;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-        .container {
-            background-color: #ffffff;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            padding: 30px;
-            max-width: 600px;
-            width: 100%;
-            text-align: center;
-            border: 1px solid #e2e8f0;
-        }
-        .quiz-section {
-            display: none; /* Hidden by default */
-        }
-        .button {
-            @apply px-6 py-3 rounded-lg font-semibold text-white transition-all duration-300 ease-in-out shadow-md hover:shadow-lg;
-        }
-        .button-primary {
-            @apply bg-blue-600 hover:bg-blue-700;
-        }
-        .button-secondary {
-            @apply bg-gray-500 hover:bg-gray-600;
-        }
-        .button-success {
-            @apply bg-green-600 hover:bg-green-700;
-        }
-        .button-danger {
-            @apply bg-red-600 hover:bg-red-700;
-        }
-        .feedback-message {
-            @apply mt-4 p-3 rounded-lg font-medium;
-        }
-        .feedback-correct {
-            @apply bg-green-100 text-green-700;
-        }
-        .feedback-incorrect {
-            @apply bg-red-100 text-red-700;
-        }
-        .score-display-top {
-            @apply text-lg font-bold text-gray-700 mb-4 flex justify-between items-center;
-        }
-        .question-text {
-            @apply text-2xl font-bold text-gray-800 mb-6;
-        }
-        .question-counter {
-            @apply text-gray-600 text-sm mb-4;
-        }
-        .level-display {
-            @apply text-blue-700 text-xl font-bold;
-        }
-        .options-container {
-            @apply flex flex-col items-start space-y-3 mt-6;
-        }
-        .option-label {
-            @apply flex items-center p-3 w-full border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors duration-200;
-            text-align: left;
-        }
-        .option-label input[type="radio"] {
-            @apply mr-3;
-        }
-        .option-label.selected {
-            @apply bg-blue-100 border-blue-500;
-        }
-        .option-label.correct {
-            @apply bg-green-200 border-green-600;
-        }
-        .option-label.incorrect {
-            @apply bg-red-200 border-red-600;
-        }
-        .modal {
-            display: none; /* Hidden by default */
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.4);
-            justify-content: center;
-            align-items: center;
-        }
-        .modal-content {
-            background-color: #fefefe;
-            margin: auto;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            width: 80%;
-            max-width: 400px;
-            text-align: center;
-            position: relative;
-        }
-        .close-button {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            cursor: pointer;
-        }
-        .close-button:hover,
-        .close-button:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>General Knowledge MCQ Quiz</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .container {
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+        }
+        .quiz-section {
+            display: none; /* Hidden by default */
+        }
+        .button {
+            @apply px-6 py-3 rounded-lg font-semibold text-white transition-all duration-300 ease-in-out shadow-md hover:shadow-lg;
+        }
+        .button-primary {
+            @apply bg-blue-600 hover:bg-blue-700;
+        }
+        .button-secondary {
+            @apply bg-gray-500 hover:bg-gray-600;
+        }
+        .button-success {
+            @apply bg-green-600 hover:bg-green-700;
+        }
+        .button-danger {
+            @apply bg-red-600 hover:bg-red-700;
+        }
+        .feedback-message {
+            @apply mt-4 p-3 rounded-lg font-medium;
+        }
+        .feedback-correct {
+            @apply bg-green-100 text-green-700;
+        }
+        .feedback-incorrect {
+            @apply bg-red-100 text-red-700;
+        }
+        .score-display-top {
+            @apply text-lg font-bold text-gray-700 mb-4 flex justify-between items-center;
+        }
+        .question-text {
+            @apply text-2xl font-bold text-gray-800 mb-6;
+        }
+        .question-counter {
+            @apply text-gray-600 text-sm mb-4;
+        }
+        .level-display {
+            @apply text-blue-700 text-xl font-bold;
+        }
+        .options-container {
+            @apply flex flex-col items-start space-y-3 mt-6;
+        }
+        .option-label {
+            @apply flex items-center p-3 w-full border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors duration-200;
+            text-align: left;
+        }
+        .option-label input[type="radio"] {
+            @apply mr-3;
+        }
+        .option-label.selected {
+            @apply bg-blue-100 border-blue-500;
+        }
+        .option-label.correct {
+            @apply bg-green-200 border-green-600;
+        }
+        .option-label.incorrect {
+            @apply bg-red-200 border-red-600;
+        }
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            width: 80%;
+            max-width: 400px;
+            text-align: center;
+            position: relative;
+        }
+        .close-button {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            cursor: pointer;
+        }
+        .close-button:hover,
+        .close-button:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1 class="text-4xl font-extrabold text-gray-900 mb-8">සාමාන්‍ය දැනුම MCQ ප්‍රශ්නාවලිය</h1>
+    <div class="container">
+        <h1 class="text-4xl font-extrabold text-gray-900 mb-8">සාමාන්‍ය දැනුම MCQ ප්‍රශ්නාවලිය</h1>
 
-        <div id="start-screen">
-            <p class="text-lg text-gray-700 mb-6">
-                මෙම ප්‍රශ්නාවලිය ප්‍රශ්න 200කින් සමන්විත වන අතර, ප්‍රශ්න 20 බැගින් මට්ටම් 10කට බෙදා ඇත.
-                පහසු ප්‍රශ්නවලින් ආරම්භ වී ක්‍රමයෙන් අභියෝගාත්මක වනු ඇත.
-                ඊළඟ මට්ටමට යාමට නම්, ඔබ වත්මන් මට්ටමේ ප්‍රශ්න 20න් **16ක් හෝ ඊට වැඩි ප්‍රමාණයක්** නිවැරදිව පිළිතුරු දිය යුතුය.
-                පිළිතුරු දීමට සූදානම්ද?
-            </p>
-            <button id="start-quiz-btn" class="button button-primary">ප්‍රශ්නාවලිය ආරම්භ කරන්න</button>
-        </div>
+        <div id="start-screen">
+            <p class="text-lg text-gray-700 mb-6">
+                මෙම ප්‍රශ්නාවලිය ප්‍රශ්න 20කින් සමන්විත වේ.
+                පිළිතුරු දීමට සූදානම්ද?
+            </p>
+            <button id="start-quiz-btn" class="button button-primary">ප්‍රශ්නාවලිය ආරම්භ කරන්න</button>
+        </div>
 
-        <div id="quiz-section" class="quiz-section">
-            <div class="score-display-top">
-                <span id="level-display" class="level-display"></span>
-                <span id="total-score-display">මුළු ලකුණු: 0</span>
-            </div>
-            <p id="question-counter" class="question-counter"></p>
-            <p id="question-text" class="question-text"></p>
-            <div id="options-container" class="options-container">
-                <!-- MCQ options will be loaded here -->
-            </div>
-            <p id="feedback" class="feedback-message hidden"></p>
+        <div id="quiz-section" class="quiz-section">
+            <div class="score-display-top">
+                <span id="level-display" class="level-display"></span>
+                <span id="total-score-display">මුළු ලකුණු: 0</span>
+            </div>
+            <p id="question-counter" class="question-counter"></p>
+            <p id="question-text" class="question-text"></p>
+            <div id="options-container" class="options-container">
+                            </div>
+            <p id="feedback" class="feedback-message hidden"></p>
 
-            <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4 mt-6">
-                <button id="check-answer-btn" class="button button-success">පිළිතුර පරීක්ෂා කරන්න</button>
-                <button id="next-question-btn" class="button button-secondary" disabled>ඊළඟ ප්‍රශ්නය</button>
-            </div>
-            <p id="current-level-score-display" class="score-display">වත්මන් මට්ටමේ ලකුණු: 0</p>
-        </div>
+            <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4 mt-6">
+                <button id="check-answer-btn" class="button button-success">පිළිතුර පරීක්ෂා කරන්න</button>
+                <button id="next-question-btn" class="button button-secondary" disabled>ඊළඟ ප්‍රශ්නය</button>
+            </div>
+        </div>
 
-        <div id="level-status-screen" class="quiz-section">
-            <h2 id="level-status-heading" class="text-3xl font-bold text-gray-900 mb-4"></h2>
-            <p id="level-status-message" class="text-xl text-gray-800 mb-2"></p>
-            <p id="level-status-score" class="text-lg text-gray-700 mb-4"></p>
-            <p id="level-status-total-score" class="text-lg font-bold text-gray-800 mb-6"></p>
-            <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4 mt-6">
-                <button id="level-status-primary-btn" class="button button-primary"></button>
-                <button id="level-status-secondary-btn" class="button button-secondary hidden">නැවත ආරම්භ කරන්න</button>
-            </div>
-        </div>
+        <div id="end-screen" class="quiz-section">
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">ප්‍රශ්නාවලිය අවසන්! 🏆</h2>
+            <p id="final-score" class="text-xl text-gray-800 mb-6"></p>
+            <button id="restart-quiz-btn" class="button button-primary">නැවත ආරම්භ කරන්න</button>
+        </div>
+    </div>
 
-        <div id="end-screen" class="quiz-section">
-            <h2 class="text-3xl font-bold text-gray-900 mb-4">ප්‍රශ්නාවලිය අවසන්! 🏆</h2>
-            <p id="final-score" class="text-xl text-gray-800 mb-6"></p>
-            <button id="restart-quiz-btn" class="button button-primary">නැවත ආරම්භ කරන්න</button>
-        </div>
-    </div>
+        <div id="custom-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <p id="modal-message" class="text-lg text-gray-800"></p>
+            <button id="modal-ok-button" class="button button-primary mt-4">හරි</button>
+        </div>
+    </div>
 
-    <!-- Custom Modal for Alerts -->
-    <div id="custom-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <p id="modal-message" class="text-lg text-gray-800"></p>
-            <button id="modal-ok-button" class="button button-primary mt-4">හරි</button>
-        </div>
-    </div>
+    <script>
+        const quizData = [
+            {
+                question: "ලෝකයේ මුළු මහාද්වීප ගණන කීයද?",
+                answer: "7",
+                options: ["5", "6", "7", "8"]
+            },
+            {
+                question: "ලෝකයේ මුළු සාගර ගණන කීයද?",
+                answer: "5",
+                options: ["3", "4", "5", "6"]
+            },
+            {
+                question: "මළ මුහුද පිහිටා තිබෙන්නේ කුමන රටවල් අතරද?",
+                answer: "ජෝර්දානය සහ ඊශ්‍රායලය",
+                options: ["ඊජිප්තුව සහ සවුදි අරාබිය", "ජෝර්දානය සහ ඊශ්‍රායලය", "තුර්කිය සහ ග්‍රීසිය", "ඉරානය සහ ඉරාකය"]
+            },
+            {
+                question: "1886 දී ඇමරිකා එක්සත් ජනපදයට 'නිදහස් ප්‍රතිමාව' තෑගි කළේ කුමන රටද?",
+                answer: "ප්‍රංශ",
+                options: ["ජර්මනිය", "ප්‍රංශ", "බ්‍රිතාන්‍යය", "ඉතාලිය"]
+            },
+            {
+                question: "බර්මියුඩා ත්‍රිකෝණ කලාපය පිහිටා තිබෙන්නේ කුමන සාගරයේද?",
+                answer: "අත්ලාන්තික්",
+                options: ["පැසිෆික්", "ඉන්දියන්", "අත්ලාන්තික්", "ආක්ටික්"]
+            },
+            {
+                question: "'නැගී එන හිරුගේ දේශය' ලෙස ද හැඳින්වෙන රට කුමක්ද?",
+                answer: "ජපානය",
+                options: ["චීනය", "ජපානය", "කොරියාව", "තායිලන්තය"]
+            },
+            {
+                question: "ලොව විශාලතම තේ නිෂ්පාදකයා වන්නේ කවරෙක් ද?",
+                answer: "චීනය",
+                options: ["ඉන්දියාව", "ශ්‍රී ලංකාව", "චීනය", "කෙන්යාව"]
+            },
+            {
+                question: "සූවස් ඇළ පිහිටා ඇත්තේ කුමන රටේද?",
+                answer: "ඊජිප්තුව",
+                options: ["ග්‍රීසිය", "තුර්කිය", "ඊජිප්තුව", "සිරියාව"]
+            },
+            {
+                question: "ලෝකයේ දිගම මහාද්වීපික කඳු පන්තිය කුමක්ද?",
+                answer: "ඇන්ඩීස්",
+                options: ["හිමාලය", "රොකී", "ඇන්ඩීස්", "ඇල්ප්ස්"]
+            },
+            {
+                question: "එක්සත් ජාතියේ ආරම්භක සාමාජිකයින් වශයෙන් රටවල් කීයක් සහභාගී වී සිටියාද?",
+                answer: "51",
+                options: ["45", "50", "51", "60"]
+            },
+            {
+                question: "ලෝකයේ විශාලතම නිර්වතන වැසි වනාන්තරය කුමක්ද?",
+                answer: "ඇමේසන්",
+                options: ["කොංගෝ", "ඇමේසන්", "බෝර්නියෝ", "නිව් ගිනියා"]
+            },
+            {
+                question: "බ්‍රිතාන්‍ය පාලනයෙන් පසු හොංකොං චීනයේ කොටසක් බවට පත් වූයේ කුමන වර්ෂයේදී ද?",
+                answer: "1997",
+                options: ["1987", "1997", "2007", "1977"]
+            },
+            {
+                question: "'ලෝකයේ වහලය' ලෙස හැඳින්වෙන කන්ද කුමක්ද?",
+                answer: "පමීර්",
+                options: ["එවරස්ට්", "කිලිමන්ජාරෝ", "පමීර්", "කේ2"]
+            },
+            {
+                question: "ලංකාව හා චීනය අතර ප්‍රථම ආර්ථික ගිවිසුම",
+                answer: "සහල් රබර් ගිවිසුම",
+                options: ["තේ ගිවිසුම", "සහල් රබර් ගිවිසුම", "මුහුදු වෙළඳ ගිවිසුම", "කපු ගිවිසුම"]
+            },
+            {
+                question: "මහ බැංකුව පිහිටවූ වසර",
+                answer: "1950",
+                options: ["1948", "1950", "1952", "1955"]
+            },
+            {
+                question: "ලොව දිගම ජාතික ගීය ඇත්තේ කුමන රටටද?",
+                answer: "ග්‍රීසිය",
+                options: ["රුසියාව", "ඉන්දියාව", "ග්‍රීසිය", "චීනය"]
+            },
+            {
+                question: "මිනිසාගේ ඉල ඇට ගණන",
+                answer: "12",
+                options: ["10", "11", "12", "13"]
+            },
+            {
+                question: "ආලෝකය සඳේ සිට පොලොවට වැටීමට ගතවන කාලය කොපමණද?",
+                answer: "තප්පර 1.5",
+                options: ["තප්පර 1", "තප්පර 1.5", "තප්පර 2", "තප්පර 2.5"]
+            },
+            {
+                question: "ඕසෝන් ස්තරයට හානි කරන වායූන්",
+                answer: "නයිට්‍රස් ඔක්සයිඩ්, ක්ලෝරෝ ප්ලූරෝ කාබන්",
+                options: ["කාබන් ඩයොක්සයිඩ්", "මීතේන්", "නයිට්‍රස් ඔක්සයිඩ්, ක්ලෝරෝ ප්ලූරෝ කාබන්", "සල්ෆර් ඩයොක්සයිඩ්"]
+            },
+            {
+                question: "සිංහල රාජ වංශයේ අවසන් සිංහල රජතුමා වනුයේ",
+                answer: "ශ්‍රි වීර පරාක්‍රම නරේන්ද්‍රසිංහ රජු",
+                options: ["දොන් ජුවන් ධර්මපාල", "විමලධර්මසූරිය II", "ශ්‍රි වීර පරාක්‍රම නරේන්ද්‍රසිංහ රජු", "ශ්‍රී වික්‍රම රාජසිංහ"]
+            }
+        ];
+        const TOTAL_QUESTIONS = quizData.length;
 
-    <script>
-        // Quiz data for 200 MCQ questions, structured for 10 levels (20 questions per level).
-        // For demonstration, only the first 20 questions (Level 1) are included here.
-        // You can add the remaining 180 questions for Levels 2-10 below, ensuring they progress in difficulty.
-        const allQuizData = [
-            // Level 1: Easy Questions (Questions 1-20)
-            {
-                question: "ලෝකයේ මුළු මහාද්වීප ගණන කීයද?",
-                answer: "7",
-                options: ["5", "6", "7", "8"]
-            },
-            {
-                question: "ලෝකයේ මුළු සාගර ගණන කීයද?",
-                answer: "5",
-                options: ["3", "4", "5", "6"]
-            },
-            {
-                question: "මළ මුහුද පිහිටා තිබෙන්නේ කුමන රටවල් අතරද?",
-                answer: "ජෝර්දානය සහ ඊශ්‍රායලය",
-                options: ["ඊජිප්තුව සහ සවුදි අරාබිය", "ජෝර්දානය සහ ඊශ්‍රායලය", "තුර්කිය සහ ග්‍රීසිය", "ඉරානය සහ ඉරාකය"]
-            },
-            {
-                question: "1886 දී ඇමරිකා එක්සත් ජනපදයට 'නිදහස් ප්‍රතිමාව' තෑගි කළේ කුමන රටද?",
-                answer: "ප්‍රංශ",
-                options: ["ජර්මනිය", "ප්‍රංශ", "බ්‍රිතාන්‍යය", "ඉතාලිය"]
-            },
-            {
-                question: "බර්මියුඩා ත්‍රිකෝණ කලාපය පිහිටා තිබෙන්නේ කුමන සාගරයේද?",
-                answer: "අත්ලාන්තික්",
-                options: ["පැසිෆික්", "ඉන්දියන්", "අත්ලාන්තික්", "ආක්ටික්"]
-            },
-            {
-                question: "'නැගී එන හිරුගේ දේශය' ලෙස ද හැඳින්වෙන රට කුමක්ද?",
-                answer: "ජපානය",
-                options: ["චීනය", "ජපානය", "කොරියාව", "තායිලන්තය"]
-            },
-            {
-                question: "ලොව විශාලතම තේ නිෂ්පාදකයා වන්නේ කවරෙක් ද?",
-                answer: "චීනය",
-                options: ["ඉන්දියාව", "ශ්‍රී ලංකාව", "චීනය", "කෙන්යාව"]
-            },
-            {
-                question: "සූවස් ඇළ පිහිටා ඇත්තේ කුමන රටේද?",
-                answer: "ඊජිප්තුව",
-                options: ["ග්‍රීසිය", "තුර්කිය", "ඊජිප්තුව", "සිරියාව"]
-            },
-            {
-                question: "ලෝකයේ දිගම මහාද්වීපික කඳු පන්තිය කුමක්ද?",
-                answer: "ඇන්ඩීස්",
-                options: ["හිමාලය", "රොකී", "ඇන්ඩීස්", "ඇල්ප්ස්"]
-            },
-            {
-                question: "එක්සත් ජාතියේ ආරම්භක සාමාජිකයින් වශයෙන් රටවල් කීයක් සහභාගී වී සිටියාද?",
-                answer: "51",
-                options: ["45", "50", "51", "60"]
-            },
-            {
-                question: "ලෝකයේ විශාලතම නිර්වතන වැසි වනාන්තරය කුමක්ද?",
-                answer: "ඇමේසන්",
-                options: ["කොංගෝ", "ඇමේසන්", "බෝර්නියෝ", "නිව් ගිනියා"]
-            },
-            {
-                question: "බ්‍රිතාන්‍ය පාලනයෙන් පසු හොංකොං චීනයේ කොටසක් බවට පත් වූයේ කුමන වර්ෂයේදී ද?",
-                answer: "1997",
-                options: ["1987", "1997", "2007", "1977"]
-            },
-            {
-                question: "'ලෝකයේ වහලය' ලෙස හැඳින්වෙන කන්ද කුමක්ද?",
-                answer: "පමීර්",
-                options: ["එවරස්ට්", "කිලිමන්ජාරෝ", "පමීර්", "කේ2"]
-            },
-            {
-                question: "ලංකාව හා චීනය අතර ප්‍රථම ආර්ථික ගිවිසුම",
-                answer: "සහල් රබර් ගිවිසුම",
-                options: ["තේ ගිවිසුම", "සහල් රබර් ගිවිසුම", "මුහුදු වෙළඳ ගිවිසුම", "කපු ගිවිසුම"]
-            },
-            {
-                question: "මහ බැංකුව පිහිටවූ වසර",
-                answer: "1950",
-                options: ["1948", "1950", "1952", "1955"]
-            },
-            {
-                question: "ලොව දිගම ජාතික ගීය ඇත්තේ කුමන රටටද?",
-                answer: "ග්‍රීසිය",
-                options: ["රුසියාව", "ඉන්දියාව", "ග්‍රීසිය", "චීනය"]
-            },
-            {
-                question: "මිනිසාගේ ඉල ඇට ගණන",
-                answer: "12",
-                options: ["10", "11", "12", "13"]
-            },
-            {
-                question: "ආලෝකය සඳේ සිට පොලොවට වැටීමට ගතවන කාලය කොපමණද?",
-                answer: "තප්පර 1.5",
-                options: ["තප්පර 1", "තප්පර 1.5", "තප්පර 2", "තප්පර 2.5"]
-            },
-            {
-                question: "ඕසෝන් ස්තරයට හානි කරන වායූන්",
-                answer: "නයිට්‍රස් ඔක්සයිඩ්, ක්ලෝරෝ ප්ලූරෝ කාබන්",
-                options: ["කාබන් ඩයොක්සයිඩ්", "මීතේන්", "නයිට්‍රස් ඔක්සයිඩ්, ක්ලෝරෝ ප්ලූරෝ කාබන්", "සල්ෆර් ඩයොක්සයිඩ්"]
-            },
-            {
-                question: "සිංහල රාජ වංශයේ අවසන් සිංහල රජතුමා වනුයේ",
-                answer: "ශ්‍රි වීර පරාක්‍රම නරේන්ද්‍රසිංහ රජු",
-                options: ["දොන් ජුවන් ධර්මපාල", "විමලධර්මසූරිය II", "ශ්‍රි වීර පරාක්‍රම නරේන්ද්‍රසිංහ රජු", "ශ්‍රී වික්‍රම රාජසිංහ"]
-            },
-            // Level 2: Medium Questions (Questions 21-40) - Placeholder
-            // Add 20 more questions here, similar to the above structure.
-            // Example:
-            // {
-            //     question: "ලෝකයේ උසම සිවිල් ගුවන් තොටුපල කුමක්ද?",
-            //     answer: "ඩාවොචෙන් යාඩිං ගුවන් තොටුපල, චීනය",
-            //     options: ["ටිබෙට් ගුවන් තොටුපල", "නේපාල ගුවන් තොටුපල", "ඩාවොචෙන් යාඩිං ගුවන් තොටුපල, චීනය", "භූතාන ගුවන් තොටුපල"]
-            // },
-            // ... up to 200 questions, ensuring difficulty increases with level
-        ];
+        let shuffledQuizData = [];
+        let currentQuestionIndex = 0;
+        let totalScore = 0;
 
-        const QUESTIONS_PER_LEVEL = 20;
-        const PASS_SCORE_PERCENTAGE = 0.8; // 80% to pass
-        const PASS_SCORE_THRESHOLD = QUESTIONS_PER_LEVEL * PASS_SCORE_PERCENTAGE; // 16 for 20 questions
+        const startScreen = document.getElementById('start-screen');
+        const quizSection = document.getElementById('quiz-section');
+        const endScreen = document.getElementById('end-screen');
+        const startQuizBtn = document.getElementById('start-quiz-btn');
 
-        let shuffledQuizData = []; // All questions, shuffled once at start
-        let currentQuestionIndex = 0;
-        let totalScore = 0;
-        let currentLevel = 1;
-        let levelScore = 0; // Score for the current level
-        let quizStarted = false;
+        const totalScoreDisplay = document.getElementById('total-score-display');
+        const questionCounter = document.getElementById('question-counter');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const feedback = document.getElementById('feedback');
+        const checkAnswerBtn = document.getElementById('check-answer-btn');
+        const nextQuestionBtn = document.getElementById('next-question-btn');
 
-        // Get DOM elements
-        const startScreen = document.getElementById('start-screen');
-        const quizSection = document.getElementById('quiz-section');
-        const levelStatusScreen = document.getElementById('level-status-screen'); // Combined screen for level pass/fail
-        const endScreen = document.getElementById('end-screen');
-        const startQuizBtn = document.getElementById('start-quiz-btn');
+        const finalScore = document.getElementById('final-score');
+        const restartQuizBtn = document.getElementById('restart-quiz-btn');
 
-        const levelDisplay = document.getElementById('level-display');
-        const totalScoreDisplay = document.getElementById('total-score-display');
-        const questionCounter = document.getElementById('question-counter');
-        const questionText = document.getElementById('question-text');
-        const optionsContainer = document.getElementById('options-container');
-        const feedback = document.getElementById('feedback');
-        const checkAnswerBtn = document.getElementById('check-answer-btn');
-        const nextQuestionBtn = document.getElementById('next-question-btn');
-        const currentLevelScoreDisplay = document.getElementById('current-level-score-display');
+        const customModal = document.getElementById('custom-modal');
+        const modalMessage = document.getElementById('modal-message');
+        const modalOkButton = document.getElementById('modal-ok-button');
+        const closeButton = document.querySelector('.close-button');
 
-        const levelStatusHeading = document.getElementById('level-status-heading');
-        const levelStatusMessage = document.getElementById('level-status-message');
-        const levelStatusScore = document.getElementById('level-status-score');
-        const levelStatusTotalScore = document.getElementById('level-status-total-score');
-        const levelStatusPrimaryBtn = document.getElementById('level-status-primary-btn');
-        const levelStatusSecondaryBtn = document.getElementById('level-status-secondary-btn');
+        function showModal(message) {
+            modalMessage.textContent = message;
+            customModal.style.display = 'flex';
+        }
 
-        const finalScore = document.getElementById('final-score');
-        const restartQuizBtn = document.getElementById('restart-quiz-btn');
+        function hideModal() {
+            customModal.style.display = 'none';
+        }
 
-        // Custom Modal elements
-        const customModal = document.getElementById('custom-modal');
-        const modalMessage = document.getElementById('modal-message');
-        const modalOkButton = document.getElementById('modal-ok-button');
-        const closeButton = document.querySelector('.close-button');
+        modalOkButton.addEventListener('click', hideModal);
+        closeButton.addEventListener('click', hideModal);
+        window.addEventListener('click', (event) => {
+            if (event.target == customModal) {
+                hideModal();
+            }
+        });
 
-        // Function to show custom modal
-        function showModal(message) {
-            modalMessage.textContent = message;
-            customModal.style.display = 'flex';
-        }
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
 
-        // Function to hide custom modal
-        function hideModal() {
-            customModal.style.display = 'none';
-        }
+        function startQuiz() {
+            shuffledQuizData = shuffleArray([...quizData]);
+            currentQuestionIndex = 0;
+            totalScore = 0;
 
-        // Event listeners for modal
-        modalOkButton.addEventListener('click', hideModal);
-        closeButton.addEventListener('click', hideModal);
-        window.addEventListener('click', (event) => {
-            if (event.target == customModal) {
-                hideModal();
-            }
-        });
+            startScreen.style.display = 'none';
+            endScreen.style.display = 'none';
+            quizSection.style.display = 'block';
+  
+            updateDisplays();
+            displayQuestion();
+        }
 
-        // Function to shuffle array (for options)
-        function shuffleArray(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]]; // Swap elements
-            }
-            return array;
-        }
+        function updateDisplays() {
+            totalScoreDisplay.textContent = `මුළු ලකුණු: ${totalScore}`;
+            // If you want to show the level, you can re-enable this.
+            // levelDisplay.textContent = `මට්ටම 1 / 1`;
+        }
 
-        // Function to start the quiz
-        function startQuiz() {
-            // Shuffle all questions once at the beginning
-            shuffledQuizData = shuffleArray([...allQuizData]);
-            currentQuestionIndex = 0;
-            totalScore = 0;
-            currentLevel = 1;
-            levelScore = 0;
-            quizStarted = true;
+        function displayQuestion() {
+            if (currentQuestionIndex >= TOTAL_QUESTIONS) {
+                endQuiz();
+                return;
+            }
 
-            // Hide all screens and show quiz section
-            startScreen.style.display = 'none';
-            levelStatusScreen.style.display = 'none';
-            endScreen.style.display = 'none';
-            quizSection.style.display = 'block';
+            questionCounter.textContent = `ප්‍රශ්නය ${currentQuestionIndex + 1} / ${TOTAL_QUESTIONS}`;
 
-            updateScoreDisplays();
-            displayQuestion();
-        }
+            const question = shuffledQuizData[currentQuestionIndex];
+            questionText.textContent = question.question;
 
-        // Function to update score displays
-        function updateScoreDisplays() {
-            totalScoreDisplay.textContent = `මුළු ලකුණු: ${totalScore}`;
-            currentLevelScoreDisplay.textContent = `වත්මන් මට්ටමේ ලකුණු: ${levelScore}`;
-            levelDisplay.textContent = `මට්ටම ${currentLevel} / ${Math.ceil(allQuizData.length / QUESTIONS_PER_LEVEL)}`;
-        }
+            optionsContainer.innerHTML = '';
+            const shuffledOptions = shuffleArray([...question.options]);
 
-        // Function to display the current question and its options
-        function displayQuestion() {
-            // Check if all questions are done
-            if (currentQuestionIndex >= allQuizData.length) {
-                endQuiz();
-                return;
-            }
+            shuffledOptions.forEach((option) => {
+                const optionLabel = document.createElement('label');
+                optionLabel.className = 'option-label';
+                optionLabel.innerHTML = `
+                    <input type="radio" name="answer" value="${option}" class="form-radio">
+                    <span>${option}</span>
+                `;
+                optionsContainer.appendChild(optionLabel);
 
-            const currentQuestionNumberInLevel = (currentQuestionIndex % QUESTIONS_PER_LEVEL) + 1;
-            const totalQuestionsInCurrentLevel = Math.min(QUESTIONS_PER_LEVEL, allQuizData.length - ((currentLevel - 1) * QUESTIONS_PER_LEVEL));
+                optionLabel.querySelector('input[type="radio"]').addEventListener('change', () => {
+                    document.querySelectorAll('.option-label').forEach(label => {
+                        label.classList.remove('selected');
+                    });
+                    if (optionLabel.querySelector('input[type="radio"]').checked) {
+                        optionLabel.classList.add('selected');
+                    }
+                });
+            });
 
-            questionCounter.textContent = `ප්‍රශ්නය ${currentQuestionNumberInLevel} / ${totalQuestionsInCurrentLevel}`;
+            feedback.textContent = '';
+            feedback.classList.add('hidden');
+            checkAnswerBtn.disabled = false;
+            nextQuestionBtn.disabled = true;
+            optionsContainer.querySelectorAll('input[type="radio"]').forEach(radio => {
+                radio.disabled = false;
+            });
+        }
 
-            const question = shuffledQuizData[currentQuestionIndex];
-            questionText.textContent = question.question;
+        function checkAnswer() {
+            const selectedOption = document.querySelector('input[name="answer"]:checked');
+            const feedbackElement = document.getElementById('feedback');
 
-            optionsContainer.innerHTML = ''; // Clear previous options
-            const shuffledOptions = shuffleArray([...question.options]); // Shuffle options for each question
+            feedbackElement.classList.remove('hidden', 'feedback-correct', 'feedback-incorrect');
+            document.querySelectorAll('.option-label').forEach(label => {
+                label.classList.remove('selected', 'correct', 'incorrect');
+            });
 
-            shuffledOptions.forEach((option) => {
-                const optionLabel = document.createElement('label');
-                optionLabel.className = 'option-label';
-                optionLabel.innerHTML = `
-                    <input type="radio" name="answer" value="${option}" class="form-radio">
-                    <span>${option}</span>
-                `;
-                optionsContainer.appendChild(optionLabel);
+            if (!selectedOption) {
+                showModal('කරුණාකර පිළිතුරක් තෝරන්න.');
+                return;
+            }
 
-                // Add event listener to highlight selected option
-                optionLabel.querySelector('input[type="radio"]').addEventListener('change', () => {
-                    document.querySelectorAll('.option-label').forEach(label => {
-                        label.classList.remove('selected');
-                    });
-                    if (optionLabel.querySelector('input[type="radio"]').checked) {
-                        optionLabel.classList.add('selected');
-                    }
-                });
-            });
+            const userAnswer = selectedOption.value.trim().toLowerCase();
+            const correctAnswer = shuffledQuizData[currentQuestionIndex].answer.trim().toLowerCase();
 
-            feedback.textContent = '';
-            feedback.classList.add('hidden');
-            checkAnswerBtn.disabled = false;
-            nextQuestionBtn.disabled = true;
+            optionsContainer.querySelectorAll('input[type="radio"]').forEach(radio => {
+                radio.disabled = true;
+            });
 
-            // Enable all radio buttons
-            optionsContainer.querySelectorAll('input[type="radio"]').forEach(radio => {
-                radio.disabled = false;
-            });
-        }
+            optionsContainer.querySelectorAll('.option-label').forEach(label => {
+                const radio = label.querySelector('input[type="radio"]');
+                if (radio.value.trim().toLowerCase() === correctAnswer) {
+                    label.classList.add('correct');
+                } else if (radio.checked) {
+                    label.classList.add('incorrect');
+                }
+            });
 
-        // Function to check the answer
-        function checkAnswer() {
-            const selectedOption = document.querySelector('input[name="answer"]:checked');
-            const feedbackElement = document.getElementById('feedback');
+            if (userAnswer === correctAnswer) {
+                totalScore++;
+                feedbackElement.textContent = 'නිවැරදියි!';
+                feedbackElement.classList.add('feedback-correct');
+            } else {
+                feedbackElement.textContent = `වැරදියි. නිවැරදි පිළිතුර: ${shuffledQuizData[currentQuestionIndex].answer}`;
+                feedbackElement.classList.add('feedback-incorrect');
+            }
 
-            feedbackElement.classList.remove('hidden', 'feedback-correct', 'feedback-incorrect');
-            document.querySelectorAll('.option-label').forEach(label => {
-                label.classList.remove('selected', 'correct', 'incorrect');
-            });
+            updateDisplays();
+            checkAnswerBtn.disabled = true;
+            nextQuestionBtn.disabled = false;
+        }
 
-            if (!selectedOption) {
-                showModal('කරුණාකර පිළිතුරක් තෝරන්න.');
-                return;
-            }
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < TOTAL_QUESTIONS) {
+                displayQuestion();
+            } else {
+                endQuiz();
+            }
+        }
 
-            const userAnswer = selectedOption.value.trim().toLowerCase();
-            const correctAnswer = shuffledQuizData[currentQuestionIndex].answer.trim().toLowerCase();
+        function endQuiz() {
+            quizSection.style.display = 'none';
+            endScreen.style.display = 'block';
+            finalScore.textContent = `ඔබ ලකුණු ${totalScore} ක් ලබා ගත්තා. ${TOTAL_QUESTIONS} න්!`;
+        }
 
-            // Disable all radio buttons after checking
-            optionsContainer.querySelectorAll('input[type="radio"]').forEach(radio => {
-                radio.disabled = true;
-            });
+        startQuizBtn.addEventListener('click', startQuiz);
+        checkAnswerBtn.addEventListener('click', checkAnswer);
+        nextQuestionBtn.addEventListener('click', nextQuestion);
+        restartQuizBtn.addEventListener('click', startQuiz);
 
-            // Highlight correct and incorrect answers
-            optionsContainer.querySelectorAll('.option-label').forEach(label => {
-                const radio = label.querySelector('input[type="radio"]');
-                if (radio.value.trim().toLowerCase() === correctAnswer) {
-                    label.classList.add('correct');
-                } else if (radio.checked) {
-                    label.classList.add('incorrect');
-                }
-            });
-
-            if (userAnswer === correctAnswer) {
-                totalScore++;
-                levelScore++;
-                feedbackElement.textContent = 'නිවැරදියි!';
-                feedbackElement.classList.add('feedback-correct');
-            } else {
-                feedbackElement.textContent = `වැරදියි. නිවැරදි පිළිතුර: ${shuffledQuizData[currentQuestionIndex].answer}`;
-                feedbackElement.classList.add('feedback-incorrect');
-            }
-
-            updateScoreDisplays();
-            checkAnswerBtn.disabled = true;
-            nextQuestionBtn.disabled = false;
-        }
-
-        // Function to move to the next question or check level completion
-        function nextQuestion() {
-            currentQuestionIndex++;
-            // Check if it's the end of the current level
-            if (currentQuestionIndex % QUESTIONS_PER_LEVEL === 0 && currentQuestionIndex < allQuizData.length) {
-                checkLevelCompletion();
-            } else if (currentQuestionIndex >= allQuizData.length) {
-                // If all questions are done (last level completed)
-                endQuiz();
-            } else {
-                displayQuestion();
-            }
-        }
-
-        // Function to check if the user passed the current level
-        function checkLevelCompletion() {
-            quizSection.style.display = 'none';
-            levelStatusScreen.style.display = 'block';
-
-            levelStatusScore.textContent = `මෙම මට්ටමේ ලකුණු: ${levelScore} / ${QUESTIONS_PER_LEVEL}`;
-            levelStatusTotalScore.textContent = `මුළු ලකුණු: ${totalScore}`;
-
-            if (levelScore >= PASS_SCORE_THRESHOLD) {
-                levelStatusHeading.textContent = `මට්ටම ${currentLevel} සම්පූර්ණයි! 🎉`;
-                levelStatusMessage.textContent = `සුභ පැතුම්! ඔබ ඊළඟ මට්ටමට සුදුසුකම් ලබා ගත්තා.`;
-                levelStatusPrimaryBtn.textContent = 'ඊළඟ මට්ටම';
-                levelStatusPrimaryBtn.onclick = goToNextLevel;
-                levelStatusSecondaryBtn.style.display = 'none'; // Hide restart level button
-            } else {
-                levelStatusHeading.textContent = `මට්ටම ${currentLevel} අසමත්! 😔`;
-                levelStatusMessage.textContent = `ඔබට ඊළඟ මට්ටමට යාමට ප්‍රශ්න ${PASS_SCORE_THRESHOLD} ක් නිවැරදිව පිළිතුරු දීමට අවශ්‍ය විය.`;
-                levelStatusPrimaryBtn.textContent = 'නැවත උත්සාහ කරන්න';
-                levelStatusPrimaryBtn.onclick = restartCurrentLevel;
-                levelStatusSecondaryBtn.textContent = 'මුල සිට ආරම්භ කරන්න';
-                levelStatusSecondaryBtn.onclick = startQuiz;
-                levelStatusSecondaryBtn.style.display = 'inline-block'; // Show restart quiz button
-            }
-        }
-
-        // Function to go to the next level
-        function goToNextLevel() {
-            currentLevel++;
-            levelScore = 0; // Reset level score for the new level
-            levelStatusScreen.style.display = 'none';
-            quizSection.style.display = 'block';
-            updateScoreDisplays();
-            displayQuestion();
-        }
-
-        // Function to restart the current level
-        function restartCurrentLevel() {
-            // Reset currentQuestionIndex to the start of the current level
-            currentQuestionIndex = (currentLevel - 1) * QUESTIONS_PER_LEVEL;
-            // Deduct current level's score from total score before resetting levelScore
-            totalScore -= levelScore;
-            levelScore = 0; // Reset level score
-            levelStatusScreen.style.display = 'none';
-            quizSection.style.display = 'block';
-            updateScoreDisplays();
-            displayQuestion();
-        }
-
-        // Function to end the quiz (when all levels are completed)
-        function endQuiz() {
-            quizStarted = false;
-            quizSection.style.display = 'none';
-            levelStatusScreen.style.display = 'none';
-            endScreen.style.display = 'block';
-            finalScore.textContent = `ඔබ ලකුණු ${totalScore} ක් ලබා ගත්තා. ${allQuizData.length} න්!`;
-        }
-
-        // Event Listeners
-        startQuizBtn.addEventListener('click', startQuiz);
-        checkAnswerBtn.addEventListener('click', checkAnswer);
-        nextQuestionBtn.addEventListener('click', nextQuestion);
-        restartQuizBtn.addEventListener('click', startQuiz);
-
-        // Initial setup on window load
-        window.onload = function() {
-            // Ensure start screen is visible and other sections are hidden
-            startScreen.style.display = 'block';
-            quizSection.style.display = 'none';
-            levelStatusScreen.style.display = 'none';
-            endScreen.style.display = 'none';
-        };
-    </script>
+        window.onload = function() {
+            startScreen.style.display = 'block';
+            quizSection.style.display = 'none';
+            endScreen.style.display = 'none';
+        };
+    </script>
 </body>
 </html>
